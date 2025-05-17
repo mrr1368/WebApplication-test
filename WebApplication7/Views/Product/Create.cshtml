@@ -1,0 +1,93 @@
+﻿@model CreateProductViewModel
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center fw-bold mb-5" style="color: #198754;">
+                📦 فرم ثبت محصول
+            </h2>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <form asp-action="Create" method="post"
+                  class="bg-white border p-4 rounded-4 shadow-lg needs-validation text-end w-100"
+                  style="max-width: 550px;" novalidate dir="rtl">
+
+                <div class="mb-4">
+
+                    <i class="bi bi-type me-1"></i>
+                    <label asp-for="Name" class="form-label fw-semibold"></label>
+                    <span class="text-danger">*</span>
+
+                    <input asp-for="Name" class="form-control shadow-sm" placeholder="مثال: لپ‌تاپ ایسوس" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+
+                    <i class="bi bi-card-text me-1"></i>
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+
+                    <textarea asp-for="Description" class="form-control shadow-sm text-end" rows="4"
+                              placeholder="توضیحات کامل محصول..." dir="rtl"></textarea>
+                    
+                </div>
+
+                <div class="mb-4">
+                    <i class="bi bi-currency-dollar me-1"></i>
+                    <label asp-for="Price" class="form-label fw-semibold"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Price" class="form-control shadow-sm" placeholder="مثال: 12,000,000" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <button id="submitBtn" type="submit" class="btn btn-success w-100 py-2 fs-5 rounded-pill">
+                    <i class="bi bi-check-circle me-1"></i> ثبت محصول
+                </button>
+
+                <div class="d-grid gap-2 mt-3">
+                    <a asp-action="List" class="btn btn-outline-secondary w-100 py-2 fs-6 rounded-pill">
+                        <i class="bi bi-arrow-left-circle me-1"></i> انصراف
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        (function () {
+            'use strict';
+            const form = document.getElementById('productForm');
+            const submitBtn = document.getElementById('submitBtn');
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add('was-validated');
+                } else {
+                    event.preventDefault();
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> در حال ارسال...';
+                    setTimeout(() => form.submit(), 1000);
+                }
+            }, false);
+        })();
+    </script>
+
+    <script>
+        const priceInput = document.getElementById("Price");
+        priceInput.addEventListener("input", function (e) {
+            let value = e.target.value.replace(/,/g, "").replace(/[^\d]/g, "");
+            e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        });
+    </script>
+}
