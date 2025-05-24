@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication7.Models.Product;
+using WebApplication7.Services.Intefaces;
 
 namespace WebApplication7.Controllers
 {
@@ -7,13 +8,13 @@ namespace WebApplication7.Controllers
     {
         #region Fields
 
-        private readonly ProductServise _productServise;
+        private readonly IProductService _productServise;
 
         #endregion
 
         #region Constructor
 
-        public ProductController(ProductServise productServise)
+        public ProductController(IProductService productServise)
         {
             _productServise = productServise;
         }

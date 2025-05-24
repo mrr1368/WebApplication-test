@@ -1,8 +1,9 @@
 ﻿using WebApplication7.Models.Product;
+using WebApplication7.Services.Intefaces;
 
 namespace WebApplication7
 {
-    public class ProductServise
+    public class ProductServise : IProductService
     {
         #region Fields
 

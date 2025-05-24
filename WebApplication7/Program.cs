@@ -1,10 +1,12 @@
+using Microsoft.Extensions.DependencyInjection;
 using WebApplication7;
+using WebApplication7.Services.Intefaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<ProductServise>();
+builder.Services.AddScoped<IProductService, ProductServise>();
 
 var app = builder.Build();
 
