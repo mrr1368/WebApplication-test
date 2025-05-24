@@ -59,11 +59,14 @@
                                         <td>@(decimal.TryParse(item.Price, out var val) ? val.ToString("N0") : item.Price)</td>
                                         <td>@ToPersianDate(Convert.ToDateTime(item.CreatedAt))</td>
                                         <td>
+                                            <a ></a>
                                             <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                                <a class="btn btn-warning btn-sm d-flex align-items-center" href="/product/update?id=@item.Id">
+                                                <a class="btn btn-warning btn-sm d-flex align-items-center" asp-action="update"
+                                                    asp-route-Id="@item.Id">
                                                     <i class="bi bi-pencil-square me-1"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm d-flex align-items-center" href="/product/delete?id=@item.Id">
+                                                <a class="btn btn-danger btn-sm d-flex align-items-center" asp-action="delete" 
+                                                    asp-route-Id="@item.Id">
                                                     <i class="bi bi-trash-fill me-1"></i>
                                                 </a>
                                             </div>

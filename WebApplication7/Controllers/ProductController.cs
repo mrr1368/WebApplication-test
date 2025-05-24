@@ -22,6 +22,7 @@ namespace WebApplication7.Controllers
 
         #region List
 
+        [Route("/product-list")]
         public IActionResult List()
         {
             List<Product> products = _productServise.GetProducts();
@@ -32,13 +33,13 @@ namespace WebApplication7.Controllers
 
         #region Create
 
-        [HttpGet]
+        [HttpGet("/product-add")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("/product-add")]
         public IActionResult Create(CreateProductViewModel createProductViewModel)
         {
             var cleaned = createProductViewModel.Price.Replace(",", "");
@@ -64,13 +65,13 @@ namespace WebApplication7.Controllers
 
         #region Update
 
-        [HttpGet]
-        public IActionResult Update(int id)
+        [HttpGet("product-update/{productId?}")]
+        public IActionResult Update(int productId)
         {
-            if (id <= 0)
+            if (productId <= 0)
                 return BadRequest("آیدی معتبر نیست.");
 
-            Product? product = _productServise.GetProductById(id);
+            Product? product = _productServise.GetProductById(productId);
             if (product == null)
             {
                 return NotFound();
@@ -87,7 +88,7 @@ namespace WebApplication7.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpPost("product-update")]
         public IActionResult Update(UpdateProductViewModel updateProductViewModel)
         {
             var cleaned = updateProductViewModel.Price.Replace(",", "");
@@ -114,6 +115,7 @@ namespace WebApplication7.Controllers
 
         #region Delete
 
+        [HttpGet("/product-delete/{id?}")]
         public IActionResult Delete(int id)
         {
             _productServise.DeleteProduct(id);
