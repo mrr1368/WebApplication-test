@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication7.Models.Product;
 using WebApplication7.Services.Intefaces;
+using WebApplication7.ViewModels.Product;
 
 namespace WebApplication7.Controllers
 {
@@ -23,24 +24,24 @@ namespace WebApplication7.Controllers
 
         #region List
 
-        [Route("/product-list")]
+        [HttpGet("/product-list")]
         public IActionResult List()
         {
-            List<Product> products = _productServise.GetProducts();
-            return View(products);
+            List<ProductViewModel> model = _productServise.GetAll();
+            return View(model);
         }
 
         #endregion
 
         #region Create
 
-        [HttpGet("/product-add")]
+        [HttpGet("/product-Create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("/product-add")]
+        [HttpPost("/product-Create")]
         public IActionResult Create(CreateProductViewModel createProductViewModel)
         {
             var cleaned = createProductViewModel.Price.Replace(",", "");
@@ -57,71 +58,79 @@ namespace WebApplication7.Controllers
                 Price = priceDecimal.ToString(),
             };
 
-            _productServise.AddProduct(model);
+            bool result = _productServise.Create(model);
 
-            return RedirectToAction("List");
+            if (result)
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return View(createProductViewModel);
+            }
+
         }
 
         #endregion
 
         #region Update
 
-        [HttpGet("product-update/{productId?}")]
-        public IActionResult Update(int productId)
-        {
-            if (productId <= 0)
-                return BadRequest("آیدی معتبر نیست.");
+        //[HttpGet("product-update/{productId?}")]
+        //public IActionResult Update(int productId)
+        //{
+        //    if (productId <= 0)
+        //        return BadRequest("آیدی معتبر نیست.");
 
-            Product? product = _productServise.GetProductById(productId);
-            if (product == null)
-            {
-                return NotFound();
-            }
+        //    Productviewmodel? product = _productServise.GetProductById(productId);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            UpdateProductViewModel viewModel = new()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price
-                
-            };
-            return View(viewModel);
-        }
+        //    UpdateProductViewModel viewModel = new()
+        //    {
+        //        Id = product.Id,
+        //        Name = product.Name,
+        //        Description = product.Description,
+        //        Price = product.Price
 
-        [HttpPost("product-update")]
-        public IActionResult Update(UpdateProductViewModel updateProductViewModel)
-        {
-            var cleaned = updateProductViewModel.Price.Replace(",", "");
+        //    };
+        //    return View(viewModel);
+        //}
 
-            if (!decimal.TryParse(cleaned, out decimal priceDecimal))
-            {
-                return Content("❌ قیمت وارد شده نامعتبر است.");
-            }
+        //[HttpPost("product-update")]
+        //public IActionResult Update(UpdateProductViewModel updateProductViewModel)
+        //{
+        //    var cleaned = updateProductViewModel.Price.Replace(",", "");
 
-            var model = new UpdateProductViewModel
-            {
-                Id = updateProductViewModel.Id,
-                Name = updateProductViewModel.Name,
-                Description = updateProductViewModel.Description,
-                Price = priceDecimal.ToString(),
-            };
+        //    if (!decimal.TryParse(cleaned, out decimal priceDecimal))
+        //    {
+        //        return Content("❌ قیمت وارد شده نامعتبر است.");
+        //    }
 
-            _productServise.UpdateProduct(model);
+        //    var model = new UpdateProductViewModel
+        //    {
+        //        Id = updateProductViewModel.Id,
+        //        Name = updateProductViewModel.Name,
+        //        Description = updateProductViewModel.Description,
+        //        Price = priceDecimal.ToString(),
+        //    };
 
-            return RedirectToAction("List");
-        }
+        //    _productServise.UpdateProduct(model);
+
+        //    return RedirectToAction("List");
+        //}
 
         #endregion
 
         #region Delete
 
-        [HttpGet("/product-delete/{id?}")]
-        public IActionResult Delete(int id)
-        {
-            _productServise.DeleteProduct(id);
-            return RedirectToAction("List");
-        }
+        //[HttpGet("/product-delete/{id?}")]
+        //public IActionResult Delete(int id)
+        //{
+        //    _productServise.DeleteProduct(id);
+        //    return RedirectToAction("List");
+        //}
 
         #endregion
     }

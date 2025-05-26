@@ -7,9 +7,9 @@ using WebApplication7.Models.Product;
 
 namespace WebApplication7.Context
 {
-    public class ProductDbCnotext : DbContext
+    public class ProductDbContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        public required DbSet<Product> Products { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

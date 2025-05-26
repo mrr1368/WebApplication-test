@@ -9,7 +9,7 @@ using WebApplication7.Context;
 
 namespace WebApplication7.Migrations
 {
-    [DbContext(typeof(ProductDbCnotext))]
+    [DbContext(typeof(ProductDbContext))]
     partial class ProductDbCnotextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

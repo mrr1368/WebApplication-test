@@ -1,6 +1,13 @@
-﻿namespace WebApplication7.Services.Intefaces
+﻿using WebApplication7.ViewModels.Product;
+
+namespace WebApplication7.Services.Intefaces
 {
-    public class IProductService
+    public interface IProductService
     {
+        List<ProductViewModel> GetAll();
+
+        ProductViewModel? GetById(int id);
+
+        bool Create(CreateProductViewModel model);
     }
 }
