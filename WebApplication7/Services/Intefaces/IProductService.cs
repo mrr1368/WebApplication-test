@@ -11,5 +11,7 @@ namespace WebApplication7.Services.Intefaces
         bool Create(CreateProductViewModel model);
 
         UpdateProductViewModel? GetForEdit(int id);
+
+        bool Update(UpdateProductViewModel model);
     }
 }

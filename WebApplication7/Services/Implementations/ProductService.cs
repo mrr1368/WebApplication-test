@@ -96,6 +96,23 @@ namespace WebApplication7.Services.Implementations
                 .FirstOrDefault(p => p.Id == id);
         }
 
+        public bool Update(UpdateProductViewModel model)
+        {
+            var product = _context.Products 
+                .FirstOrDefault(p => p.Id == model.Id);
+
+            if (product == null) { return false; }
+
+            product.Name = model.Name;
+            product.Description = model.Description;
+            product.Price = model.Price;
+
+            _context.Products.Update(product);
+            _context.SaveChanges();
+
+            return true;
+        }
+
         #endregion
 
         #region Delete

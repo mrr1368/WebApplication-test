@@ -44,6 +44,11 @@ namespace WebApplication7.Controllers
         [HttpPost("/product-Create")]
         public IActionResult Create(CreateProductViewModel createProductViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(createProductViewModel);
+            }
+
             var cleaned = createProductViewModel.Price.Replace(",", "");
 
             if (!decimal.TryParse(cleaned, out decimal priceDecimal))
@@ -94,6 +99,11 @@ namespace WebApplication7.Controllers
         [HttpPost("product-update")]
         public IActionResult Update(UpdateProductViewModel updateProductViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(updateProductViewModel);
+            }
+
             var cleaned = updateProductViewModel.Price.Replace(",", "");
 
             if (!decimal.TryParse(cleaned, out decimal priceDecimal))
@@ -109,9 +119,14 @@ namespace WebApplication7.Controllers
                 Price = priceDecimal.ToString(),
             };
 
-            _productServise.UpdateProduct(model);
+            bool result = _productService.Update(model);
 
-            return RedirectToAction("List");
+            if (result)
+            {
+                return RedirectToAction("List");
+            }
+
+            return View(model);
         }
 
         #endregion
