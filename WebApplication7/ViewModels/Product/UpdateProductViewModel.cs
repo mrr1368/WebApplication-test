@@ -5,15 +5,17 @@ public class UpdateProductViewModel
     public int Id { get; set; }
 
     [Display(Name = "عنوان محصول")]
-    [Required(ErrorMessage = "عنوان محصول الزامی است.")]
-    [MinLength(2, ErrorMessage = "عنوان باید حداقل ۲ کاراکتر داشته باشد.")]
+    [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+    [MinLength(5, ErrorMessage = "تعداد کاراکتر {0} باید حداقل {1} کاراکتر داشته باشد")]
+    [MaxLength(20, ErrorMessage = "تعداد کاراکتر {0} باید حداکثر {1} کاراکتر داشته باشد")]
     public string? Name { get; set; }
 
     [Display(Name = "توضیحات محصول")]
+    [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     public string? Description { get; set; }
 
     [Display(Name = "قیمت (تومان)")]
-    [Required(ErrorMessage = "وارد کردن قیمت الزامی است.")]
+    [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     [RegularExpression(@"^\d+(,\d{3})*$", ErrorMessage = "لطفاً یک قیمت معتبر وارد کنید.")]
     public string? Price { get; set; }
 }

@@ -8,54 +8,41 @@
 			</h2>
 		</div>
 	</div>
-
-	<div class="row justify-content-center">
+	<div class="row justify-content-center"> 
 		<div class="col-12 col-md-8 col-lg-6">
-
 			<form asp-action="Update" method="post"
 				  class="bg-white border p-4 rounded-4 shadow-lg needs-validation text-end w-100"
 				  style="max-width: 550px;" novalidate dir="rtl">
-
 				<input asp-for="Id" type="hidden" />
-
 				<div class="mb-4">
-
 					<i class="bi bi-type me-1"></i>
 					<label asp-for="Name" class="form-label fw-semibold"></label>
 					<span class="text-danger">*</span>
-
 					<input asp-for="Name" class="form-control shadow-sm" placeholder="مثال: لپ‌تاپ ایسوس" />
-					<span asp-validation-for="Name" class="text-danger"></span>
+					<span asp-validation-for="Name"></span>
 				</div>
-
 				<div class="mb-4">
-
 					<i class="bi bi-card-text me-1"></i>
 					<label asp-for="Description" class="form-label fw-semibold"></label>
-
 					<textarea asp-for="Description" class="form-control shadow-sm text-end" rows="4"
 							  placeholder="توضیحات کامل محصول..." dir="rtl"></textarea>
 				</div>
-
 				<div class="mb-4">
 					<i class="bi bi-currency-dollar me-1"></i>
 					<label asp-for="Price" class="form-label fw-semibold"></label>
 					<span class="text-danger">*</span>
 					<input asp-for="Price" class="form-control shadow-sm" placeholder="مثال: 12,000,000" />
-					<span asp-validation-for="Price" class="text-danger"></span>
+					<span asp-validation-for="Price"></span>
 				</div>
-
 				<button id="submitBtn" type="submit"
 						class="btn btn-warning w-100 py-2 fs-5 rounded-pill">
 					<i class="bi bi-pencil-square"></i> ویرایش محصول
 				</button>
-
 				<div class="d-grid gap-2 mt-3">
 					<a asp-action="List" class="btn btn-outline-secondary w-100 py-2 fs-6 rounded-pill">
 						<i class="bi bi-arrow-left-circle"></i> انصراف
 					</a>
 				</div>
-
 			</form>
 		</div>
 	</div>
@@ -65,31 +52,6 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
-
-	<script>
-		// اسکریپت اعتبارسنجی فرم Bootstrap
-		(function () {
-			'use strict';
-
-			const form = document.querySelector('.needs-validation');
-			const submitBtn = document.getElementById('submitBtn');
-
-			form.addEventListener('submit', function (event) {
-				if (!form.checkValidity()) {
-					event.preventDefault();
-					event.stopPropagation();
-					form.classList.add('was-validated');
-				} else {
-					event.preventDefault();
-					submitBtn.disabled = true;
-					submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> در حال ارسال...';
-
-					setTimeout(() => form.submit(), 1000);
-				}
-			});
-		})();
-	</script>
-
 	<script>
 		// اسکریپت فرمت قیمت
 		const priceInput = document.getElementById("Price");
