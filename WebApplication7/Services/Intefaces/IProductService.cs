@@ -9,5 +9,7 @@ namespace WebApplication7.Services.Intefaces
         ProductViewModel? GetById(int id);
 
         bool Create(CreateProductViewModel model);
+
+        UpdateProductViewModel? GetForEdit(int id);
     }
 }

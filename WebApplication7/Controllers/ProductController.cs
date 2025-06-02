@@ -9,7 +9,7 @@ namespace WebApplication7.Controllers
     {
         #region Fields
 
-        private readonly IProductService _productServise;
+        private readonly IProductService _productService;
 
         #endregion
 
@@ -17,7 +17,7 @@ namespace WebApplication7.Controllers
 
         public ProductController(IProductService productServise)
         {
-            _productServise = productServise;
+            _productService = productServise;
         }
 
         #endregion
@@ -27,7 +27,7 @@ namespace WebApplication7.Controllers
         [HttpGet("/product-list")]
         public IActionResult List()
         {
-            List<ProductViewModel> model = _productServise.GetAll();
+            List<ProductViewModel> model = _productService.GetAll();
             return View(model);
         }
 
@@ -58,7 +58,7 @@ namespace WebApplication7.Controllers
                 Price = priceDecimal.ToString(),
             };
 
-            bool result = _productServise.Create(model);
+            bool result = _productService.Create(model);
 
             if (result)
             {
@@ -75,51 +75,44 @@ namespace WebApplication7.Controllers
 
         #region Update
 
-        //[HttpGet("product-update/{productId?}")]
-        //public IActionResult Update(int productId)
-        //{
-        //    if (productId <= 0)
-        //        return BadRequest("آیدی معتبر نیست.");
+        [HttpGet("product-update/{productId?}")]
+        public IActionResult Update(int productId)
+        {
+            if (productId <= 0)  
+                BadRequest("آیدی معتبر نیست.");
 
-        //    Productviewmodel? product = _productServise.GetProductById(productId);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
+            UpdateProductViewModel? model = _productService.GetForEdit(productId);
 
-        //    UpdateProductViewModel viewModel = new()
-        //    {
-        //        Id = product.Id,
-        //        Name = product.Name,
-        //        Description = product.Description,
-        //        Price = product.Price
+            if (model == null)
+            {
+                return NotFound();
+            }
 
-        //    };
-        //    return View(viewModel);
-        //}
+            return View(model);
+        }
 
-        //[HttpPost("product-update")]
-        //public IActionResult Update(UpdateProductViewModel updateProductViewModel)
-        //{
-        //    var cleaned = updateProductViewModel.Price.Replace(",", "");
+        [HttpPost("product-update")]
+        public IActionResult Update(UpdateProductViewModel updateProductViewModel)
+        {
+            var cleaned = updateProductViewModel.Price.Replace(",", "");
 
-        //    if (!decimal.TryParse(cleaned, out decimal priceDecimal))
-        //    {
-        //        return Content("❌ قیمت وارد شده نامعتبر است.");
-        //    }
+            if (!decimal.TryParse(cleaned, out decimal priceDecimal))
+            {
+                return Content("❌ قیمت وارد شده نامعتبر است.");
+            }
 
-        //    var model = new UpdateProductViewModel
-        //    {
-        //        Id = updateProductViewModel.Id,
-        //        Name = updateProductViewModel.Name,
-        //        Description = updateProductViewModel.Description,
-        //        Price = priceDecimal.ToString(),
-        //    };
+            var model = new UpdateProductViewModel
+            {
+                Id = updateProductViewModel.Id,
+                Name = updateProductViewModel.Name,
+                Description = updateProductViewModel.Description,
+                Price = priceDecimal.ToString(),
+            };
 
-        //    _productServise.UpdateProduct(model);
+            _productServise.UpdateProduct(model);
 
-        //    return RedirectToAction("List");
-        //}
+            return RedirectToAction("List");
+        }
 
         #endregion
 

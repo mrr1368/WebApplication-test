@@ -83,19 +83,18 @@ namespace WebApplication7.Services.Implementations
 
         #region Update
 
-        //public void UpdateProduct(UpdateProductViewModel updateProductViewModel)
-        //{
-        //    var existingProduct = GetProductById(updateProductViewModel.Id);
-
-        //    if (existingProduct == null)
-        //    {
-        //        return;
-        //    }
-
-        //    existingProduct.Name = updateProductViewModel.Name;
-        //    existingProduct.Description = updateProductViewModel.Description;
-        //    existingProduct.Price = updateProductViewModel.Price;
-        //}
+        public UpdateProductViewModel? GetForEdit(int id)
+        {
+            return _context.Products
+                .Select(p => new UpdateProductViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                })
+                .FirstOrDefault(p => p.Id == id);
+        }
 
         #endregion
 
