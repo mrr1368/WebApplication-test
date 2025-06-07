@@ -96,7 +96,7 @@ namespace WebApplication7.Controllers
             return View(model);
         }
 
-        [HttpPost("product-update")]
+        [HttpGet("product-update/{productId?}")]
         public IActionResult Update(UpdateProductViewModel updateProductViewModel)
         {
             if (!ModelState.IsValid)

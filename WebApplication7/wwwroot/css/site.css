@@ -33,3 +33,7 @@ body {
 .field-validation-error{
     color:red !important
 }
+
+.validation-summary-errors ul li{
+    color:red !important
+}

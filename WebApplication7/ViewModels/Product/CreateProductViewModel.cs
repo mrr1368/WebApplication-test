@@ -5,7 +5,7 @@ public class CreateProductViewModel
     [Display(Name = "عنوان محصول")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     [MinLength(2, ErrorMessage = "تعداد کاراکتر {0} باید حداقل {1} کاراکتر داشته باشد")]
-    [MaxLength(20, ErrorMessage = "تعداد کاراکتر {0} باید حداکثر {1} کاراکتر داشته باشد")]
+    [MaxLength(10, ErrorMessage = "تعداد کاراکتر {0} باید حداکثر {1} کاراکتر داشته باشد")]
     public string? Name { get; set; }
 
     [Display(Name = "توضیحات محصول")]
