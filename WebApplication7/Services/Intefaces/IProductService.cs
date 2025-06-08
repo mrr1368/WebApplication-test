@@ -13,5 +13,7 @@ namespace WebApplication7.Services.Intefaces
         UpdateProductViewModel? GetProductForEdit(int id);
 
         bool UpdateProduct(UpdateProductViewModel model);
+
+        bool DeleteProduct(int id);
     }
 }

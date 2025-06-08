@@ -64,17 +64,14 @@ namespace WebApplication7.Services.Implementations
 
         public bool CreateProduct(CreateProductViewModel model)
         {
-            Product product = new()
+            _context.Products.Add(new()
             {
-                Name = model.Name,
+                Name = model.Name!,
                 Description = model.Description,
                 Price = model.Price,
-                CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
-            };
-
-            _context.Add(product);
+                CreatedAt = DateTime.Now
+            });
             _context.SaveChanges();
-
             return true;
 
         }
@@ -98,7 +95,7 @@ namespace WebApplication7.Services.Implementations
 
         public bool UpdateProduct(UpdateProductViewModel model)
         {
-            var product = _context.Products 
+            var product = _context.Products
                 .FirstOrDefault(p => p.Id == model.Id);
 
             if (product == null) { return false; }
@@ -117,17 +114,20 @@ namespace WebApplication7.Services.Implementations
 
         #region Delete
 
-        //public void DeleteProduct(int id)
-        //{
-        //    var product = GetProductById(id);
+        public bool DeleteProduct(int id)
+        {
+            Product? product = _context.Products
+               .FirstOrDefault(p => p.Id == id);
 
-        //    if (product == null)
-        //    {
-        //        return;
-        //    }
+            if (product == null)
+            {
+                return false;
+            }
 
-        //    _products.Remove(product);
-        //}
+            _context.Remove(product);
+            _context.SaveChanges();
+            return true;
+        }
 
         #endregion
     }
