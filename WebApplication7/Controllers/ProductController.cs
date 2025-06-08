@@ -27,7 +27,7 @@ namespace WebApplication7.Controllers
         [HttpGet("/product-list")]
         public IActionResult List()
         {
-            List<ProductViewModel> model = _productService.GetAll();
+            List<ProductViewModel> model = _productService.GetAllProducts();
             return View(model);
         }
 
@@ -44,36 +44,31 @@ namespace WebApplication7.Controllers
         [HttpPost("/product-Create")]
         public IActionResult Create(CreateProductViewModel createProductViewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(createProductViewModel);
+                #region price validation
+
+                var cleaned = createProductViewModel.Price.Replace(",", "");
+                if (!decimal.TryParse(cleaned, out decimal priceDecimal))
+                {
+                    return Content("❌ قیمت وارد شده نامعتبر است.");
+                }
+                CreateProductViewModel model = new CreateProductViewModel
+                {
+                    Name = createProductViewModel.Name,
+                    Description = createProductViewModel.Description,
+                    Price = priceDecimal.ToString(),
+                };
+
+                #endregion
+
+                bool result = _productService.CreateProduct(model);
+                if (result)
+                {
+                    return RedirectToAction("List");
+                }
             }
-
-            var cleaned = createProductViewModel.Price.Replace(",", "");
-
-            if (!decimal.TryParse(cleaned, out decimal priceDecimal))
-            {
-                return Content("❌ قیمت وارد شده نامعتبر است.");
-            }
-
-            CreateProductViewModel model = new CreateProductViewModel
-            {
-                Name = createProductViewModel.Name,
-                Description = createProductViewModel.Description,
-                Price = priceDecimal.ToString(),
-            };
-
-            bool result = _productService.Create(model);
-
-            if (result)
-            {
-                return RedirectToAction("List");
-            }
-            else
-            {
-                return View(createProductViewModel);
-            }
-
+            return View(createProductViewModel);
         }
 
         #endregion
@@ -83,7 +78,7 @@ namespace WebApplication7.Controllers
         [HttpGet("product-update/{productId?}")]
         public IActionResult Update(int productId)
         {
-            if (productId <= 0)  
+            if (productId <= 0)
                 BadRequest("آیدی معتبر نیست.");
 
             UpdateProductViewModel? model = _productService.GetForEdit(productId);

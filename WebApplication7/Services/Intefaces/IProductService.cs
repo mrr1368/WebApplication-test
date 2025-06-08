@@ -4,14 +4,14 @@ namespace WebApplication7.Services.Intefaces
 {
     public interface IProductService
     {
-        List<ProductViewModel> GetAll();
+        List<ProductViewModel> GetAllProducts();
 
-        ProductViewModel? GetById(int id);
+        ProductViewModel? GetProductById(int id);
 
-        bool Create(CreateProductViewModel model);
+        bool CreateProduct(CreateProductViewModel model);
 
-        UpdateProductViewModel? GetForEdit(int id);
+        UpdateProductViewModel? GetProductForEdit(int id);
 
-        bool Update(UpdateProductViewModel model);
+        bool UpdateProduct(UpdateProductViewModel model);
     }
 }

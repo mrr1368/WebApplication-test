@@ -25,7 +25,7 @@ namespace WebApplication7.Services.Implementations
 
         #region Read
 
-        public List<ProductViewModel> GetAll()
+        public List<ProductViewModel> GetAllProducts()
         {
             var products = _context.Products
                 .Select(p => new ProductViewModel()
@@ -40,7 +40,7 @@ namespace WebApplication7.Services.Implementations
             return products;
         }
 
-        public ProductViewModel? GetById(int id)
+        public ProductViewModel? GetProductById(int id)
         {
             var product = _context.Products
                 .FirstOrDefault(p => p.Id == id);
@@ -62,7 +62,7 @@ namespace WebApplication7.Services.Implementations
 
         #region Create
 
-        public bool Create(CreateProductViewModel model)
+        public bool CreateProduct(CreateProductViewModel model)
         {
             Product product = new()
             {
@@ -83,7 +83,7 @@ namespace WebApplication7.Services.Implementations
 
         #region Update
 
-        public UpdateProductViewModel? GetForEdit(int id)
+        public UpdateProductViewModel? GetProductForEdit(int id)
         {
             return _context.Products
                 .Select(p => new UpdateProductViewModel()
@@ -96,7 +96,7 @@ namespace WebApplication7.Services.Implementations
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public bool Update(UpdateProductViewModel model)
+        public bool UpdateProduct(UpdateProductViewModel model)
         {
             var product = _context.Products 
                 .FirstOrDefault(p => p.Id == model.Id);
