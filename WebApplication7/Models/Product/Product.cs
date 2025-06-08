@@ -12,4 +12,6 @@
 
         public required DateTime CreatedAt { get; set; }  
     }
+
+    //Fluent Api
 }
