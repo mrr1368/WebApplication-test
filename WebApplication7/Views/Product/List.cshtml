@@ -53,10 +53,9 @@
                                         <td>@item.Id</td>
                                         <td>@item.Name</td>
                                         <td>@item.Description</td>
-                                        <td>@(decimal.TryParse(item.Price, out var val) ? val.ToString("N0") : item.Price)</td>
+                                        <td>@item.Price</td>
                                         <td>@ToPersianDate(Convert.ToDateTime(item.CreatedAt))</td>
                                         <td>
-                                            <a ></a>
                                             <div class="d-flex justify-content-center gap-2 flex-wrap">
                                                 <a class="btn btn-warning btn-sm d-flex align-items-center" asp-action="update"
                                                     asp-route-productId="@item.Id">

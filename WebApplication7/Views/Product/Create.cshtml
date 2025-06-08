@@ -8,7 +8,6 @@
             </h2>
         </div>
     </div>
-    <div asp-validation-summary="All"></div>
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
             <form asp-action="Create" method="post"
@@ -35,7 +34,7 @@
                     <input asp-for="Price" class="form-control shadow-sm" placeholder="مثال: 12,000,000" />
                     <span asp-validation-for="Price"></span>
                 </div>
-                <button id="submitBtn" type="submit" class="btn btn-success w-100 py-2 fs-5 rounded-pill">
+                <button type="submit" class="btn btn-success w-100 py-2 fs-5 rounded-pill">
                     <i class="bi bi-check-circle me-1"></i> ثبت محصول
                 </button>
                 <div class="d-grid gap-2 mt-3">
@@ -47,37 +46,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-    <script>
-        (function () {
-            'use strict';
-            const form = document.getElementById('productForm');
-            const submitBtn = document.getElementById('submitBtn');
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    form.classList.add('was-validated');
-                } else {
-                    event.preventDefault();
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> در حال ارسال...';
-                    setTimeout(() => form.submit(), 1000);
-                }
-            }, false);
-        })();
-    </script>
-
-    <script>
-        const priceInput = document.getElementById("Price");
-        priceInput.addEventListener("input", function (e) {
-            let value = e.target.value.replace(/,/g, "").replace(/[^\d]/g, "");
-            e.target.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        });
-    </script>
-}
