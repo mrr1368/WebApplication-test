@@ -42,46 +42,38 @@ namespace WebApplication7.Controllers
         }
 
         [HttpPost("/product-Create")]
-        public IActionResult Create(CreateProductViewModel createProductViewModel)
+        public IActionResult Create(CreateProductViewModel model)
         {
             if (ModelState.IsValid)
             {
-                #region price validation
-
-                var cleaned = createProductViewModel.Price.Replace(",", "");
-                if (!decimal.TryParse(cleaned, out decimal priceDecimal))
-                {
-                    return Content("❌ قیمت وارد شده نامعتبر است.");
-                }
-                CreateProductViewModel model = new CreateProductViewModel
-                {
-                    Name = createProductViewModel.Name,
-                    Description = createProductViewModel.Description,
-                    Price = priceDecimal.ToString(),
-                };
-
-                #endregion
-
                 bool result = _productService.CreateProduct(model);
                 if (result)
                 {
                     return RedirectToAction("List");
                 }
             }
-            return View(createProductViewModel);
+
+            var priceErrors = ModelState["Price"]?.Errors;
+            if (priceErrors != null && priceErrors.Any(e => e.ErrorMessage.Contains("not valid")))
+            {
+                ModelState["Price"]!.Errors.Clear();
+                ModelState["Price"]!.Errors.Add("قیمت باید فقط عدد باشد، بدون حروف یا کاراکتر فارسی.");
+            }
+
+            return View(model);
         }
 
         #endregion
 
         #region Update
 
-        [HttpGet("product-update/{productId?}")]
+        [HttpGet("/product-update/{productId?}")]
         public IActionResult Update(int productId)
         {
             if (productId <= 0)
                 BadRequest("آیدی معتبر نیست.");
 
-            UpdateProductViewModel? model = _productService.GetForEdit(productId);
+            UpdateProductViewModel? model = _productService.GetProductForEdit(productId);
 
             if (model == null)
             {
@@ -91,34 +83,23 @@ namespace WebApplication7.Controllers
             return View(model);
         }
 
-        [HttpGet("product-update/{productId?}")]
-        public IActionResult Update(UpdateProductViewModel updateProductViewModel)
+        [HttpPost("/product-update/{productId?}")]
+        public IActionResult Update(UpdateProductViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(updateProductViewModel);
+                bool result = _productService.UpdateProduct(model);
+                if (result)
+                {
+                    return RedirectToAction("List");
+                }
             }
 
-            var cleaned = updateProductViewModel.Price.Replace(",", "");
-
-            if (!decimal.TryParse(cleaned, out decimal priceDecimal))
+            var priceErrors = ModelState["Price"]?.Errors;
+            if (priceErrors != null && priceErrors.Any(e => e.ErrorMessage.Contains("not valid")))
             {
-                return Content("❌ قیمت وارد شده نامعتبر است.");
-            }
-
-            var model = new UpdateProductViewModel
-            {
-                Id = updateProductViewModel.Id,
-                Name = updateProductViewModel.Name,
-                Description = updateProductViewModel.Description,
-                Price = priceDecimal.ToString(),
-            };
-
-            bool result = _productService.Update(model);
-
-            if (result)
-            {
-                return RedirectToAction("List");
+                ModelState["Price"]!.Errors.Clear();
+                ModelState["Price"]!.Errors.Add("قیمت باید فقط عدد باشد، بدون حروف یا کاراکتر فارسی.");
             }
 
             return View(model);
@@ -128,12 +109,16 @@ namespace WebApplication7.Controllers
 
         #region Delete
 
-        //[HttpGet("/product-delete/{id?}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    _productServise.DeleteProduct(id);
-        //    return RedirectToAction("List");
-        //}
+        [HttpGet("/product-delete/{id?}")]
+        public IActionResult Delete(int id)
+        {
+            bool result = _productService.DeleteProduct(id);
+            if (result)
+            {
+                return RedirectToAction("List");
+            }
+            return NotFound("محصول مورد نظر یافت نشد.");
+        }
 
         #endregion
     }
